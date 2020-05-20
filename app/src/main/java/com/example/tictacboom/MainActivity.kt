@@ -129,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         buSelected.isEnabled = false
         CheckWinner()
     }
+
     fun CheckWinner()
     {
         var winner = -1
@@ -248,9 +249,7 @@ class MainActivity : AppCompatActivity() {
     {
         val emptyCells = ArrayList<Int>()
         for (cellId in 1..9) {
-            if (Player1.contains(cellId) || Player2.contains(cellId))
-            {}
-            else
+            if (!Player1.contains(cellId) && !Player2.contains(cellId))
             {
                 emptyCells.add(cellId)
             }
