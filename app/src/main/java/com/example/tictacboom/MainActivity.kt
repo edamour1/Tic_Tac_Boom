@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     fun restartGame(view: View)
     {
+        placeBomb()
         button1.setBackgroundResource(android.R.drawable.btn_default)
         button2.setBackgroundResource(android.R.drawable.btn_default)
         button3.setBackgroundResource(android.R.drawable.btn_default)
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity() {
             buSelected.text = "X"
             buSelected.setBackgroundColor(Color.GREEN)
             Player1.add(cellId)
+            removePiece(cellId, buSelected)
             ActivePlayer = 2
             if (setPlayer == 1)
             {}
@@ -125,8 +127,10 @@ class MainActivity : AppCompatActivity() {
             buSelected.setBackgroundColor(Color.CYAN)
             Player2.add(cellId)
             ActivePlayer = 1
+            removePiece(cellId, buSelected)
         }
         buSelected.isEnabled = false
+        println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
         CheckWinner()
     }
 
@@ -247,13 +251,14 @@ class MainActivity : AppCompatActivity() {
     }
     fun AutoPlay()
     {
+        //create ArrayList to keep track of available spots that are on the board
         val emptyCells = ArrayList<Int>()
-        for (cellId in 1..9) {
-            if (!Player1.contains(cellId) && !Player2.contains(cellId))
-            {
-                emptyCells.add(cellId)
-            }
-        }
+
+        for (cellId in 1..9) {//cellId is alias for values that are looped from 1 - 9
+            if (!Player1.contains(cellId) && !Player2.contains(cellId))//if current value isn't occupied by player 1 and 2 add value to "emptyCells" list
+            { emptyCells.add(cellId) }//end of if staement
+        }//end of forloop
+
         val r = Random()
         val randomIndex = r.nextInt(emptyCells.size-0)+0
         val cellId = emptyCells[randomIndex]
@@ -271,8 +276,48 @@ class MainActivity : AppCompatActivity() {
             9 -> buSelect = button9
             else -> buSelect = button1
         }
+
         PlayGame(cellId,buSelect)
     }
 
+    /**************************************************
+    ***************************************************
+    **This function places a random bomb on the board**
+    ***************************************************
+    ****************************************************/
+    fun placeBomb(){
+        val r = Random()
+        bomb = r.nextInt(9)+1
+    }
+
+    fun removePiece(cellId:Int, buSelected:Button){
+        val removeAtIndex: Int
+            print("\n")
+        if(Player1.contains(bomb)){
+            buSelected.text = "boom"
+            println("Player_1 contains bomb")
+            println("bomb is = $bomb")
+            println(Player1.toString())
+            removeAtIndex = Player1.indexOf(bomb)
+            println("removeAtIndex is $removeAtIndex")
+            println("New Player1 index")
+            Player1.removeAt(removeAtIndex)
+            println(Player1.toString())
+        }else if(Player2.contains(bomb)){
+            buSelected.text = "boom"
+            println("Player_2 contains bomb")
+            println("bomb is = $bomb")
+            println(Player2.toString())
+            removeAtIndex = Player2.indexOf(bomb)
+            println("removeAtIndex is $removeAtIndex")
+            println("New Player2 index")
+            Player2.removeAt(removeAtIndex)
+            println(Player2.toString())
+        }//end of else if block
+
+        buSelected.isEnabled = true
+        println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
+        placeBomb()
+    }
 
 }
