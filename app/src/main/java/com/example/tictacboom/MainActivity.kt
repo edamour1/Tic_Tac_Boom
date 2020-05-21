@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     var Player2 = ArrayList<Int>()
     var ActivePlayer = 1
     var setPlayer = 1
-    var bomb: Int = -1
+    var bomb: Int = 1
 
     fun restartGame(view: View)
     {
@@ -289,11 +289,27 @@ class MainActivity : AppCompatActivity() {
     ***************************************************
     ****************************************************/
     fun placeBomb(){
+        println("In placeBomb function")
         val r = Random()
         bomb = r.nextInt(9)+1
+        val removeAtIndex: Int
+
+        if(Player1.contains(bomb)){
+            println("In placeBomb function Player1 bomb")
+            removeAtIndex = Player1.indexOf(bomb)
+            Player1.removeAt(removeAtIndex)
+            sweepBoard(bomb)
+        }else if(Player2.contains(bomb)){
+            println("In placeBomb function Player2 bomb")
+            removeAtIndex = Player2.indexOf(bomb)
+            Player2.removeAt(removeAtIndex)
+            sweepBoard(bomb)
+        }//end of else if statement
+
     }
 
     fun removePiece(cellId:Int, buSelected:Button){
+        println("In removePiece function")
         val removeAtIndex: Int
             print("\n")
         if(Player1.contains(bomb)){
@@ -321,6 +337,29 @@ class MainActivity : AppCompatActivity() {
         buSelected.isEnabled = true
         println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
         placeBomb()
+    }
+
+    fun sweepBoard(cellId: Int){
+        println("In Sweep function")
+        val buSelect:Button?
+        when(cellId)
+        {
+            1 -> buSelect = button1
+            2 -> buSelect = button2
+            3 -> buSelect = button3
+            4 -> buSelect = button4
+            5 -> buSelect = button5
+            6 -> buSelect = button6
+            7 -> buSelect = button7
+            8 -> buSelect = button8
+            9 -> buSelect = button9
+            else -> buSelect = button1
+        }
+
+        buSelect.text = "boom"
+        buSelect.isEnabled = true
+        placeBomb()
+
     }
 
 }
