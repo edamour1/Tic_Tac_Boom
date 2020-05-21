@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             buSelected.text = "X"
             buSelected.setBackgroundColor(Color.GREEN)
             Player1.add(cellId)
-            removePiece(cellId, buSelected)
+
             ActivePlayer = 2
             if (setPlayer == 1)
             {}
@@ -127,10 +127,13 @@ class MainActivity : AppCompatActivity() {
             buSelected.setBackgroundColor(Color.CYAN)
             Player2.add(cellId)
             ActivePlayer = 1
-            removePiece(cellId, buSelected)
+            //removePiece(cellId, buSelected)
         }
         buSelected.isEnabled = false
         println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
+
+        if(cellId == bomb){removePiece(cellId, buSelected)}
+
         CheckWinner()
     }
 
