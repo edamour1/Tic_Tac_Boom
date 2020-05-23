@@ -6,17 +6,117 @@ import java.util.*
 
 class Cpu {
 
-    fun miniMax(depth: Int, nodeIndex: Int, isMax: Boolean, scores: List<Int>, h: Int): Int{
-        if(depth == h)
-            return scores[nodeIndex]
-
-        if(isMax)
-            return max(miniMax(depth+1, nodeIndex*2, false, scores, h),
-                miniMax(depth+1, nodeIndex*2 + 1, false, scores, h))
-        else
-            return min(miniMax(depth+1, nodeIndex*2, true, scores, h),
-                miniMax(depth+1, nodeIndex*2 + 1, true, scores, h))
+    class Move{
+        var row: Int = 0
+        var col: Int = 0
     }
+
+    fun miniMax(board: Array<CharArray>, depth: Int, isMax: Boolean): Int{
+        val player = 'x'
+        val opponent = 'o'
+
+        val score = evaluate(board)
+
+        if(score == 10)
+            return score
+
+        if(score == -10)
+            return -10
+
+        if(isMovesLeft(board) == false)
+            return 0
+
+        if(isMax){
+            var best = -1000
+
+            //Traverse all cells
+            for(row in 0..2){
+                for(col in 0..2){
+
+                    //Check if cell is empty
+                    if(board[row][col] == '_'){
+
+                        //Make the move
+                        board[row][col] = player
+
+                        //call minimax recursively and choose
+                        //the maximum value
+                        best = max(best, miniMax(board, depth + 1, !isMax))
+
+                        //Undo move
+                        board[row][col] = '_'
+                    }//end of if block
+                }//end of nested for loop block "col"
+            }//end of for loop block "row"
+            return best
+        }//end of if block "isMax"
+        else{
+            var best = 1000
+
+            //Traverse all cells
+            for(row in 0..2){
+                for(col in 0..2){
+
+                    //Check if cell is empty
+                    if(board[row][col] == '_'){
+
+                        //Make he move
+                        board[row][col] = opponent
+
+                        //call minimax recursively and choose
+                        //the maximum value
+                        best = min(best, miniMax(board, depth + 1, !isMax))
+
+                        //Undo move
+                        board[row][col] = '_'
+                    }//end of if block
+                }//end of nested for loop block "col"
+            }//end of for loop block "row"
+            return best
+        }
+
+    }//end of miniMax function
+
+    /*This will return the best possible
+    **move for the player
+    */
+    fun findBestMove(board: Array<CharArray>): Move{
+        val player = 'x'
+        val opponent = 'o'
+        var bestVal = -1000
+        var bestMove = Move()
+        bestMove.row = -1
+        bestMove.col = -1
+
+        for(row in 0..2){
+            for(col in 0..2){
+                if(board[row][col] == '_'){
+                    //Make move
+                    board[row][col] = player
+
+                    // compute evaluation function for this
+                    // move.
+                    var moveVal = miniMax(board, 0, false)
+
+                    //Undo the move
+                    board[row][col] = '_'
+
+                    // If the value of the current move is
+                    // more than the best value, then update
+                    // best
+                    if (moveVal > bestVal)
+                    {
+                        bestMove.row = row;
+                        bestMove.col = col;
+                        bestVal = moveVal;
+                    }//end of if block "moveVal > bestVal"
+
+                }//end of if block "board == '_'"
+            }//end of for loop block "col"
+        }//end of for loop block "row"
+
+        return bestMove
+    }//end of "findBestMove" function
 
     fun max(num_1: Int, num_2: Int): Int{
         return if (num_1 > num_2) num_1 else num_2 //max
@@ -71,5 +171,16 @@ class Cpu {
 
         // Else if none of them have won then return 0
         return 0
+    }
+
+    fun isMovesLeft(board: Array<CharArray>): Boolean{
+        for(row in 0..2){
+            for(col in 0..2){
+                if(board[row][col] == '_')
+                    return true
+            }//end of for loop block
+        }//end of for loop block
+
+        return false
     }
 }
