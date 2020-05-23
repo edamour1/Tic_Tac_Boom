@@ -5,15 +5,14 @@ import kotlin.collections.ArrayList
 import java.util.*
 
 class Cpu {
-
     class Move{
         var row: Int = 0
         var col: Int = 0
     }
 
     fun miniMax(board: Array<CharArray>, depth: Int, isMax: Boolean): Int{
-        val player = 'x'
-        val opponent = 'o'
+        val player = 'o'
+        val opponent = 'x'
 
         val score = evaluate(board)
 
@@ -81,8 +80,8 @@ class Cpu {
     **move for the player
     */
     fun findBestMove(board: Array<CharArray>): Move{
-        val player = 'x'
-        val opponent = 'o'
+        val player = 'o'
+        val opponent = 'x'
         var bestVal = -1000
         var bestMove = Move()
         bestMove.row = -1
@@ -136,9 +135,9 @@ class Cpu {
         // Checking for Riwsfor X or O victory.
         for(row in 0..2){
             if(board[row][0] == board[row][1] && board[row][1] == board[row][2]){
-                if(board[row][0] == 'x')
+                if(board[row][0] == 'o')
                     return +10
-                else if(board[row][0] == 'o')
+                else if(board[row][0] == 'x')
                     return -10
             }//end of for loop block
         }
@@ -146,9 +145,9 @@ class Cpu {
         // Checking for Columns for X or O victory.
         for(col in 0..2){
             if(board[0][col] == board[1][col] && board[1][col] == board[2][col]){
-                if(board[0][col] == 'x')
+                if(board[0][col] == 'o')
                     return +10
-                else if(board[0][col] == 'o')
+                else if(board[0][col] == 'x')
                     return -10
             }//end of for loop block
         }
@@ -156,16 +155,16 @@ class Cpu {
         // Checking for Diagonals for X or O victory.
         if(board[0][0] == board[1][1] && board[1][1] == board[2][2])
         {
-            if(board[0][0] == 'x')
+            if(board[0][0] == 'o')
                 return +10
-            else if(board[0][0] == 'o')
+            else if(board[0][0] == 'x')
                 return -10
         }
         if(board[0][2] == board[1][1] && board[1][1] == board[2][0])
         {
-            if(board[0][2] == 'x')
+            if(board[0][2] == 'o')
                 return +10
-            else if(board[0][2] == 'o')
+            else if(board[0][2] == 'x')
                 return -10
         }
 
