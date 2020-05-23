@@ -10,6 +10,27 @@ class Cpu {
         var col: Int = 0
     }
 
+    fun boardTranslator(bestMove: Move): Int{
+        if(bestMove.row == 0 && bestMove.col == 0)
+            return 0
+        else if(bestMove.row == 0 && bestMove.col == 1)
+            return 1
+        else if(bestMove.row == 0 && bestMove.col == 2)
+            return 2
+        else if(bestMove.row == 1 && bestMove.col == 0)
+            return 3
+        else if(bestMove.row == 1 && bestMove.col == 1)
+            return 4
+        else if(bestMove.row == 1 && bestMove.col == 2)
+            return 5
+        else if(bestMove.row == 2 && bestMove.col == 0)
+            return 6
+        else if(bestMove.row == 2 && bestMove.col == 1)
+            return 7
+        else return 8
+
+    }
+
     fun miniMax(board: Array<CharArray>, depth: Int, isMax: Boolean): Int{
         val player = 'o'
         val opponent = 'x'
