@@ -12,22 +12,22 @@ class Cpu {
 
     fun boardTranslator(bestMove: Move): Int{
         if(bestMove.row == 0 && bestMove.col == 0)
-            return 0
-        else if(bestMove.row == 0 && bestMove.col == 1)
             return 1
-        else if(bestMove.row == 0 && bestMove.col == 2)
+        else if(bestMove.row == 0 && bestMove.col == 1)
             return 2
-        else if(bestMove.row == 1 && bestMove.col == 0)
+        else if(bestMove.row == 0 && bestMove.col == 2)
             return 3
-        else if(bestMove.row == 1 && bestMove.col == 1)
+        else if(bestMove.row == 1 && bestMove.col == 0)
             return 4
-        else if(bestMove.row == 1 && bestMove.col == 2)
+        else if(bestMove.row == 1 && bestMove.col == 1)
             return 5
-        else if(bestMove.row == 2 && bestMove.col == 0)
+        else if(bestMove.row == 1 && bestMove.col == 2)
             return 6
-        else if(bestMove.row == 2 && bestMove.col == 1)
+        else if(bestMove.row == 2 && bestMove.col == 0)
             return 7
-        else return 8
+        else if(bestMove.row == 2 && bestMove.col == 1)
+            return 8
+        else return 9
 
     }
 

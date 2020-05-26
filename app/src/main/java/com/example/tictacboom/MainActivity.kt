@@ -24,9 +24,12 @@ class MainActivity : AppCompatActivity() {
 
     var Player1 = ArrayList<Int>()
     var Player2 = ArrayList<Int>()
+    var  CPU_List = ArrayList<Int>()
+
     var ActivePlayer = 1
     var setPlayer = 1
     var bomb: Int = 1
+    val cpu = Cpu()
 
     fun restartGame(view: View)
     {
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         button9.text = ""
         Player1.clear()
         Player2.clear()
+        CPU_List.clear()
         ActivePlayer = 1
         button1.isEnabled = true
         button2.isEnabled = true
@@ -100,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     fun PlayGame(cellId:Int,buSelected:Button)
     {
         if (ActivePlayer == 1)
@@ -118,22 +123,21 @@ class MainActivity : AppCompatActivity() {
                 }catch (ex:Exception)
                 {
                     Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+                }//end of catch block
+            }//end of else block
+        }//end of if block "ActivePlayer == 1"
         else
         {
             buSelected.text = "O"
             buSelected.setBackgroundColor(Color.CYAN)
             Player2.add(cellId)
             ActivePlayer = 1
-            //removePiece(cellId, buSelected)
         }
         buSelected.isEnabled = false
         println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
 
         if(cellId == bomb){removePiece(cellId, buSelected)}
-
+        boardBuilder()
         CheckWinner()
     }
 
@@ -240,6 +244,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     fun stopTouch()
     {
         button1.isEnabled = false
@@ -252,6 +257,7 @@ class MainActivity : AppCompatActivity() {
         button8.isEnabled = false
         button9.isEnabled = false
     }
+
     fun AutoPlay()
     {
         //create ArrayList to keep track of available spots that are on the board
@@ -262,10 +268,14 @@ class MainActivity : AppCompatActivity() {
             { emptyCells.add(cellId) }//end of if staement
         }//end of forloop
 
-        val r = Random()
-        val randomIndex = r.nextInt(emptyCells.size-0)+0
-        val cellId = emptyCells[randomIndex]
+
+//        val r = Random()
+//        val randomIndex = r.nextInt(emptyCells.size-0)+0
+//        val cellId = emptyCells[randomIndex]
         val buSelect:Button?
+        //CPU_List.add(cellId)
+        val cellId = cpu.boardTranslator(cpu.findBestMove(boardBuilder()))
+
         when(cellId)
         {
             1 -> buSelect = button1
@@ -278,9 +288,10 @@ class MainActivity : AppCompatActivity() {
             8 -> buSelect = button8
             9 -> buSelect = button9
             else -> buSelect = button1
-        }
-
+        }//end of when block "cellId"
+        if(cellId == bomb){removePiece(cellId, buSelect)}
         PlayGame(cellId,buSelect)
+        boardBuilder()
     }
 
     /**************************************************
@@ -304,8 +315,13 @@ class MainActivity : AppCompatActivity() {
             removeAtIndex = Player2.indexOf(bomb)
             Player2.removeAt(removeAtIndex)
             sweepBoard(bomb)
+        }else if(CPU_List.contains(bomb)){
+            println("In placeBomb function CPU bomb")
+            removeAtIndex = CPU_List.indexOf(bomb)
+            CPU_List.removeAt(removeAtIndex)
+            boardBuilder()
+            sweepBoard(bomb)
         }//end of else if statement
-
     }
 
     fun removePiece(cellId:Int, buSelected:Button){
@@ -332,7 +348,18 @@ class MainActivity : AppCompatActivity() {
             println("New Player2 index")
             Player2.removeAt(removeAtIndex)
             println(Player2.toString())
-        }//end of else if block
+        }else if(CPU_List.contains(bomb)){
+            buSelected.text = "boom"
+            println("CPU_List contains bomb")
+            println("bomb is = $bomb")
+            println(CPU_List.toString())
+            removeAtIndex = CPU_List.indexOf(bomb)
+            println("removeAtIndex is $removeAtIndex")
+            println("New CPU_List index")
+            CPU_List.removeAt(removeAtIndex)
+            println(CPU_List.toString())
+            boardBuilder()
+        }//end of else if blcok "CPU_List.contains(bomb)"
 
         buSelected.isEnabled = true
         println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
@@ -359,7 +386,55 @@ class MainActivity : AppCompatActivity() {
         buSelect.text = "boom"
         buSelect.isEnabled = true
         placeBomb()
-
+        boardBuilder()
     }
+
+    fun boardBuilder(): Array<CharArray>{
+        println("In board function")
+        val board = arrayOf(
+            charArrayOf('_', '_','_'),
+            charArrayOf('_', '_', '_'),
+            charArrayOf('_', '_', '_')
+        )
+        for(cellId in Player1){
+            when(cellId)
+            {
+                1 -> board[0][0] = 'x'
+                2 -> board[0][1] = 'x'
+                3 -> board[0][2] = 'x'
+                4 -> board[1][0] = 'x'
+                5 -> board[1][1] = 'x'
+                6 -> board[1][2] = 'x'
+                7 -> board[2][0] = 'x'
+                8 -> board[2][1] = 'x'
+                else -> board[2][2] = 'x'
+            }//end of when block "cellId"
+        }//end of forloop block "cellId in Player1"
+
+        for(cellId in Player2){
+            when(cellId)
+            {
+                1 -> board[0][0] = 'o'
+                2 -> board[0][1] = 'o'
+                3 -> board[0][2] = 'o'
+                4 -> board[1][0] = 'o'
+                5 -> board[1][1] = 'o'
+                6 -> board[1][2] = 'o'
+                7 -> board[2][0] = 'o'
+                8 -> board[2][1] = 'o'
+                else -> board[2][2] = 'o'
+            }//end of when block "cellId"
+        }//end of forloop block "cellId in Player1"
+
+        println("Player2 Array")
+        println(Player2.toString())
+        println()
+        println("CPU Array")
+        println(CPU_List.toString())
+        println(Arrays.deepToString(board))
+
+        return board
+
+    }//end of "boardBuilder" function
 
 }
