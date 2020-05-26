@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +17,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
 
     var player_1 = Player()
     var player_2 = Player()
@@ -32,27 +28,30 @@ class MainActivity : AppCompatActivity() {
     var bomb: Int = 1
     val cpu = Cpu()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        inflate()
+    }
+
+    private fun inflate() {
+        player_1.src = R.drawable.neon_blue_x
+        player_2.src = R.drawable.neon_red_o
+    }
+
     fun restartGame(view: View)
     {
         placeBomb()
-        button1.setBackgroundResource(android.R.drawable.btn_default)
-        button2.setBackgroundResource(android.R.drawable.btn_default)
-        button3.setBackgroundResource(android.R.drawable.btn_default)
-        button4.setBackgroundResource(android.R.drawable.btn_default)
-        button5.setBackgroundResource(android.R.drawable.btn_default)
-        button6.setBackgroundResource(android.R.drawable.btn_default)
-        button7.setBackgroundResource(android.R.drawable.btn_default)
-        button8.setBackgroundResource(android.R.drawable.btn_default)
-        button9.setBackgroundResource(android.R.drawable.btn_default)
-        button1.text = ""
-        button2.text = ""
-        button3.text = ""
-        button4.text = ""
-        button5.text = ""
-        button6.text = ""
-        button7.text = ""
-        button8.text = ""
-        button9.text = ""
+        button1.setImageResource(R.drawable.deafualt_button)
+        button2.setImageResource(R.drawable.deafualt_button)
+        button3.setImageResource(R.drawable.deafualt_button)
+        button4.setImageResource(R.drawable.deafualt_button)
+        button5.setImageResource(R.drawable.deafualt_button)
+        button6.setImageResource(R.drawable.deafualt_button)
+        button7.setImageResource(R.drawable.deafualt_button)
+        button8.setImageResource(R.drawable.deafualt_button)
+        button9.setImageResource(R.drawable.deafualt_button)
+
         player_1.moves.clear()
         player_2.moves.clear()
         CPU_List.clear()
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun buttonClick(view: View)
     {
-        val buSelected: Button = view as Button
+        val buSelected: ImageButton = view as ImageButton
         var cellId = 0
         when(buSelected.id)
         {
@@ -106,14 +105,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun PlayGame(cellId:Int,buSelected:Button)
+    fun PlayGame(cellId:Int,buSelected:ImageButton)
     {
         if (ActivePlayer == 1)
         {
-            buSelected.text = "X"
+            buSelected.setImageResource(player_1.src)
             buSelected.setBackgroundColor(Color.GREEN)
             player_1.moves.add(cellId)
-            player_1.moves.add(cellId)
+
 
             ActivePlayer = 2
             if (setPlayer == 1)
@@ -130,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         }//end of if block "ActivePlayer == 1"
         else
         {
-            buSelected.text = "O"
+            buSelected.setImageResource(player_2.src)
             buSelected.setBackgroundColor(Color.CYAN)
             player_2.moves.add(cellId)
             ActivePlayer = 1
@@ -274,7 +273,7 @@ class MainActivity : AppCompatActivity() {
 //        val r = Random()
 //        val randomIndex = r.nextInt(emptyCells.size-0)+0
 //        val cellId = emptyCells[randomIndex]
-        val buSelect:Button?
+        val buSelect:ImageButton?
         //CPU_List.add(cellId)
         val cellId = cpu.boardTranslator(cpu.findBestMove(boardBuilder()))
 
@@ -326,12 +325,12 @@ class MainActivity : AppCompatActivity() {
         }//end of else if statement
     }
 
-    fun removePiece(cellId:Int, buSelected:Button){
+    fun removePiece(cellId:Int, buSelected:ImageButton){
         println("In removePiece function")
         val removeAtIndex: Int
         print("\n")
         if(player_1.moves.contains(bomb)){
-            buSelected.text = "boom"
+            buSelected.setImageResource(R.drawable.deafualt_button)
             println("Player_1 contains bomb")
             println("bomb is = $bomb")
             println(player_1.moves.toString())
@@ -341,7 +340,7 @@ class MainActivity : AppCompatActivity() {
             player_1.moves.removeAt(removeAtIndex)
             println(player_1.moves.toString())
         }else if(player_2.moves.contains(bomb)){
-            buSelected.text = "boom"
+            buSelected.setImageResource(R.drawable.deafualt_button)
             println("Player_2 contains bomb")
             println("bomb is = $bomb")
             println(player_2.moves.toString())
@@ -351,7 +350,7 @@ class MainActivity : AppCompatActivity() {
             player_2.moves.removeAt(removeAtIndex)
             println(player_2.moves.toString())
         }else if(CPU_List.contains(bomb)){
-            buSelected.text = "boom"
+            buSelected.setImageResource(R.drawable.deafualt_button)
             println("CPU_List contains bomb")
             println("bomb is = $bomb")
             println(CPU_List.toString())
@@ -370,7 +369,7 @@ class MainActivity : AppCompatActivity() {
 
     fun sweepBoard(cellId: Int){
         println("In Sweep function")
-        val buSelect:Button?
+        val buSelect:ImageButton?
         when(cellId)
         {
             1 -> buSelect = button1
@@ -385,7 +384,7 @@ class MainActivity : AppCompatActivity() {
             else -> buSelect = button1
         }
 
-        buSelect.text = "boom"
+        buSelect.setImageResource(R.drawable.deafualt_button)
         buSelect.isEnabled = true
         placeBomb()
         boardBuilder()
