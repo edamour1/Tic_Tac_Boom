@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    var Player1 = ArrayList<Int>()
-    var Player2 = ArrayList<Int>()
+    var player_1 = Player()
+    var player_2 = Player()
+
     var  CPU_List = ArrayList<Int>()
 
     var ActivePlayer = 1
@@ -52,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         button7.text = ""
         button8.text = ""
         button9.text = ""
-        Player1.clear()
-        Player2.clear()
+        player_1.moves.clear()
+        player_2.moves.clear()
         CPU_List.clear()
         ActivePlayer = 1
         button1.isEnabled = true
@@ -111,7 +112,8 @@ class MainActivity : AppCompatActivity() {
         {
             buSelected.text = "X"
             buSelected.setBackgroundColor(Color.GREEN)
-            Player1.add(cellId)
+            player_1.moves.add(cellId)
+            player_1.moves.add(cellId)
 
             ActivePlayer = 2
             if (setPlayer == 1)
@@ -130,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         {
             buSelected.text = "O"
             buSelected.setBackgroundColor(Color.CYAN)
-            Player2.add(cellId)
+            player_2.moves.add(cellId)
             ActivePlayer = 1
         }
         buSelected.isEnabled = false
@@ -145,74 +147,74 @@ class MainActivity : AppCompatActivity() {
     {
         var winner = -1
         //row1
-        if (Player1.contains(1) && Player1.contains(2) && Player1.contains(3))
+        if (player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3))
         {
             winner = 1
         }
-        if (Player2.contains(1) && Player2.contains(2) && Player2.contains(3))
+        if (player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3))
         {
             winner = 2
         }
         //row2
-        if (Player1.contains(4) && Player1.contains(5) && Player1.contains(6))
+        if (player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6))
         {
             winner = 1
         }
-        if (Player2.contains(4) && Player2.contains(5) && Player2.contains(6))
+        if (player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6))
         {
             winner = 2
         }
         //row3
-        if (Player1.contains(7) && Player1.contains(8) && Player1.contains(9))
+        if (player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9))
         {
             winner = 1
         }
-        if (Player2.contains(7) && Player2.contains(8) && Player2.contains(9))
+        if (player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9))
         {
             winner = 2
         }
         //col1
-        if (Player1.contains(1) && Player1.contains(4) && Player1.contains(7))
+        if (player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7))
         {
             winner = 1
         }
-        if (Player2.contains(1) && Player2.contains(4) && Player2.contains(7))
+        if (player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7))
         {
             winner = 2
         }
         //col2
-        if (Player1.contains(2) && Player1.contains(5) && Player1.contains(8))
+        if (player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8))
         {
             winner = 1
         }
-        if (Player2.contains(2) && Player2.contains(5) && Player2.contains(8))
+        if (player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8))
         {
             winner = 2
         }
         //col3
-        if (Player1.contains(3) && Player1.contains(6) && Player1.contains(9))
+        if (player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9))
         {
             winner = 1
         }
-        if (Player2.contains(3) && Player2.contains(6) && Player2.contains(9))
+        if (player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9))
         {
             winner = 2
         }
         //cross1
-        if (Player1.contains(1) && Player1.contains(5) && Player1.contains(9))
+        if (player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9))
         {
             winner = 1
         }
-        if (Player2.contains(1) && Player2.contains(5) && Player2.contains(9))
+        if (player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9))
         {
             winner = 2
         }
         //cross2
-        if (Player1.contains(3) && Player1.contains(5) && Player1.contains(7))
+        if (player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7))
         {
             winner = 1
         }
-        if (Player2.contains(3) && Player2.contains(5) && Player2.contains(7))
+        if (player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7))
         {
             winner = 2
         }
@@ -264,7 +266,7 @@ class MainActivity : AppCompatActivity() {
         val emptyCells = ArrayList<Int>()
 
         for (cellId in 1..9) {//cellId is alias for values that are looped from 1 - 9
-            if (!Player1.contains(cellId) && !Player2.contains(cellId))//if current value isn't occupied by player 1 and 2 add value to "emptyCells" list
+            if (!player_1.moves.contains(cellId) && !player_2.moves.contains(cellId))//if current value isn't occupied by player 1 and 2 add value to "emptyCells" list
             { emptyCells.add(cellId) }//end of if staement
         }//end of forloop
 
@@ -295,25 +297,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**************************************************
-    ***************************************************
-    **This function places a random bomb on the board**
-    ***************************************************
-    ****************************************************/
+     ***************************************************
+     **This function places a random bomb on the board**
+     ***************************************************
+     ****************************************************/
     fun placeBomb(){
         println("In placeBomb function")
         val r = Random()
         bomb = r.nextInt(9)+1
         val removeAtIndex: Int
 
-        if(Player1.contains(bomb)){
-            println("In placeBomb function Player1 bomb")
-            removeAtIndex = Player1.indexOf(bomb)
-            Player1.removeAt(removeAtIndex)
+        if(player_1.moves.contains(bomb)){
+            println("In placeBomb function player_1.moves bomb")
+            removeAtIndex = player_1.moves.indexOf(bomb)
+            player_1.moves.removeAt(removeAtIndex)
             sweepBoard(bomb)
-        }else if(Player2.contains(bomb)){
-            println("In placeBomb function Player2 bomb")
-            removeAtIndex = Player2.indexOf(bomb)
-            Player2.removeAt(removeAtIndex)
+        }else if(player_2.moves.contains(bomb)){
+            println("In placeBomb function player_2.moves bomb")
+            removeAtIndex = player_2.moves.indexOf(bomb)
+            player_2.moves.removeAt(removeAtIndex)
             sweepBoard(bomb)
         }else if(CPU_List.contains(bomb)){
             println("In placeBomb function CPU bomb")
@@ -327,27 +329,27 @@ class MainActivity : AppCompatActivity() {
     fun removePiece(cellId:Int, buSelected:Button){
         println("In removePiece function")
         val removeAtIndex: Int
-            print("\n")
-        if(Player1.contains(bomb)){
+        print("\n")
+        if(player_1.moves.contains(bomb)){
             buSelected.text = "boom"
             println("Player_1 contains bomb")
             println("bomb is = $bomb")
-            println(Player1.toString())
-            removeAtIndex = Player1.indexOf(bomb)
+            println(player_1.moves.toString())
+            removeAtIndex = player_1.moves.indexOf(bomb)
             println("removeAtIndex is $removeAtIndex")
-            println("New Player1 index")
-            Player1.removeAt(removeAtIndex)
-            println(Player1.toString())
-        }else if(Player2.contains(bomb)){
+            println("New player_1.moves index")
+            player_1.moves.removeAt(removeAtIndex)
+            println(player_1.moves.toString())
+        }else if(player_2.moves.contains(bomb)){
             buSelected.text = "boom"
             println("Player_2 contains bomb")
             println("bomb is = $bomb")
-            println(Player2.toString())
-            removeAtIndex = Player2.indexOf(bomb)
+            println(player_2.moves.toString())
+            removeAtIndex = player_2.moves.indexOf(bomb)
             println("removeAtIndex is $removeAtIndex")
-            println("New Player2 index")
-            Player2.removeAt(removeAtIndex)
-            println(Player2.toString())
+            println("New player_2.moves index")
+            player_2.moves.removeAt(removeAtIndex)
+            println(player_2.moves.toString())
         }else if(CPU_List.contains(bomb)){
             buSelected.text = "boom"
             println("CPU_List contains bomb")
@@ -396,7 +398,7 @@ class MainActivity : AppCompatActivity() {
             charArrayOf('_', '_', '_'),
             charArrayOf('_', '_', '_')
         )
-        for(cellId in Player1){
+        for(cellId in player_1.moves){
             when(cellId)
             {
                 1 -> board[0][0] = 'x'
@@ -409,9 +411,9 @@ class MainActivity : AppCompatActivity() {
                 8 -> board[2][1] = 'x'
                 else -> board[2][2] = 'x'
             }//end of when block "cellId"
-        }//end of forloop block "cellId in Player1"
+        }//end of forloop block "cellId in player_1.moves"
 
-        for(cellId in Player2){
+        for(cellId in player_2.moves){
             when(cellId)
             {
                 1 -> board[0][0] = 'o'
@@ -424,13 +426,13 @@ class MainActivity : AppCompatActivity() {
                 8 -> board[2][1] = 'o'
                 else -> board[2][2] = 'o'
             }//end of when block "cellId"
-        }//end of forloop block "cellId in Player1"
+        }//end of forloop block "cellId in player_1.moves"
 
-        println("Player2 Array")
-        println(Player2.toString())
+        println("player_2.moves Array")
+        println(player_2.moves.toString())
         println()
-        println("CPU Array")
-        println(CPU_List.toString())
+        println("moves Array")
+        println(player_1.moves.toString())
         println(Arrays.deepToString(board))
 
         return board
