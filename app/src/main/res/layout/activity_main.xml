@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center_vertical"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="	#000000"
+    android:gravity="center_vertical"
+    android:visibility="visible"
     tools:context="com.example.tictacboom.MainActivity">
+
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" >
+        android:gravity="center">
 
         <Button
             android:id="@+id/PVP"
             android:layout_width="35dp"
             android:layout_height="60dp"
             android:alpha="0.9"
-            app:backgroundTint="#8BC34A"
             android:onClick="PlayerChoose"
             android:text="Player v/s Player"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            app:backgroundTint="#8BC34A" />
+
         <Button
             android:id="@+id/PVC"
             android:layout_width="35dp"
             android:layout_height="60dp"
             android:layout_margin="7sp"
             android:alpha="0.9"
-            android:text="Player v/s CPU"
             android:onClick="PlayerChoose"
+            android:text="Player v/s CPU"
             android:textAllCaps="false" />
     </TableRow>
+
     <TableRow
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
+
         <Button
             android:id="@+id/button1"
             android:layout_width="50pt"
@@ -43,6 +48,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button2"
             android:layout_width="50pt"
@@ -51,6 +57,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button3"
             android:layout_width="50pt"
@@ -60,10 +67,12 @@
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
     </TableRow>
+
     <TableRow
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:gravity="center">
+
         <Button
             android:id="@+id/button4"
             android:layout_width="50pt"
@@ -72,6 +81,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button5"
             android:layout_width="50pt"
@@ -80,6 +90,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button6"
             android:layout_width="50pt"
@@ -89,10 +100,12 @@
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
     </TableRow>
+
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
+
         <Button
             android:id="@+id/button7"
             android:layout_width="50pt"
@@ -101,6 +114,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button8"
             android:layout_width="50pt"
@@ -109,6 +123,7 @@
             android:onClick="buttonClick"
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
+
         <Button
             android:id="@+id/button9"
             android:layout_width="50pt"
@@ -118,10 +133,12 @@
             android:textSize="40sp"
             tools:ignore="ButtonStyle" />
     </TableRow>
+
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
+
         <Button
             android:id="@+id/bRestart"
             android:layout_width="wrap_content"
