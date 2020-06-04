@@ -1,7 +1,9 @@
 package com.example.tictacboom
 
 import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Handler
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     var bomb: Int = 1
     val cpu = Cpu()
 
+    var animationDrawable_1 = AnimationDrawable()
+    var animationDrawable_2 = AnimationDrawable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,7 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun inflate() {
         player_1.src = R.drawable.neon_blue_x
+        player_1.srcSetAnimation = R.drawable.x_animation
         player_2.src = R.drawable.neon_red_o
+        player_2.srcSetAnimation = R.drawable.heart_animation
     }
 
     fun restartGame(view: View)
@@ -69,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         PVP.setBackgroundColor(Color.CYAN)
         PVC.setBackgroundColor(android.R.drawable.btn_default)
     }
+
     fun buttonClick(view: View)
     {
         val buSelected: ImageButton = view as ImageButton
@@ -438,4 +446,12 @@ class MainActivity : AppCompatActivity() {
 
     }//end of "boardBuilder" function
 
+}fun AnimationDrawable.onAnimationFinished(block: () -> Unit) {
+    var duration: Long = 0
+    for (i in 0..numberOfFrames) {
+        duration += getDuration(i)
+    }
+    Handler().postDelayed({
+        block()
+    }, duration + 200)
 }
