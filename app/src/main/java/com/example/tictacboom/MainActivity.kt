@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     var  CPU_List = ArrayList<Int>()
 
     var ActivePlayer = 1
-    var setPlayer = 1
+    var setPlayer = 2
     var bomb: Int = 1
     val cpu = Cpu()
 
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         player_1.srcSetAnimation = R.drawable.x_animation
         player_2.src = R.drawable.neon_red_o
         player_2.srcSetAnimation = R.drawable.heart_animation
+        placeBomb()
     }
 
     fun restartGame(view: View)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         player_1.moves.clear()
         player_2.moves.clear()
-        CPU_List.clear()
+
         ActivePlayer = 1
         button1.isEnabled = true
         button2.isEnabled = true
@@ -72,9 +73,10 @@ class MainActivity : AppCompatActivity() {
         button7.isEnabled = true
         button8.isEnabled = true
         button9.isEnabled = true
-        setPlayer = 1
-        PVP.setBackgroundColor(Color.CYAN)
-        PVC.setBackgroundColor(android.R.drawable.btn_default)
+        setPlayer = 2
+
+        PVP.setBackgroundColor(android.R.drawable.btn_default)
+        PVC.setBackgroundColor(Color.CYAN)
     }
 
     fun buttonClick(view: View)
@@ -93,8 +95,9 @@ class MainActivity : AppCompatActivity() {
             R.id.button8 -> cellId = 8
             R.id.button9 -> cellId = 9
         }
-        PlayGame(cellId,buSelected)
+        playGame(cellId,buSelected)
     }
+
     fun PlayerChoose(view:View)
     {
         val ps:Button = view as Button
@@ -113,15 +116,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun PlayGame(cellId:Int,buSelected:ImageButton)
+    fun playGame(cellId:Int,buSelected:ImageButton)
     {
+        println("in playGame(cellId:Int,buSelected:ImageButton) function")
         if (ActivePlayer == 1)
         {
+            println("player_1 play")
             buSelected.setImageResource(player_1.src)
-            buSelected.setBackgroundColor(Color.GREEN)
+
             player_1.moves.add(cellId)
-
-
+            breakFunction(cellId,buSelected)
             ActivePlayer = 2
             if (setPlayer == 1)
             {}
@@ -137,117 +141,142 @@ class MainActivity : AppCompatActivity() {
         }//end of if block "ActivePlayer == 1"
         else
         {
+            println("player_2 play")
             buSelected.setImageResource(player_2.src)
-            buSelected.setBackgroundColor(Color.CYAN)
+
             player_2.moves.add(cellId)
             ActivePlayer = 1
-        }
-        buSelected.isEnabled = false
-        println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
-
-        if(cellId == bomb){removePiece(cellId, buSelected)}
-        boardBuilder()
-        CheckWinner()
+            breakFunction(cellId,buSelected)
+        }//end of else block
     }
 
     fun CheckWinner()
     {
+        println("in CheckWinner() function \n")
         var winner = -1
         //row1
         if (player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3))
         {
             winner = 1
+            println("player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3) \n")
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3))
         {
             winner = 2
+            println("player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3) \n")
         }
         //row2
         if (player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6))
         {
             winner = 1
+            println("player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6) \n")
         }
         if (player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6))
         {
             winner = 2
+            println("player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6) \n")
         }
         //row3
         if (player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9))
         {
             winner = 1
+            println("player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9) \n")
         }
         if (player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9))
         {
             winner = 2
+            println("player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9) \n")
         }
         //col1
         if (player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7))
         {
             winner = 1
+            println("player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7) \n")
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7))
         {
             winner = 2
+            println("player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7) \n")
         }
         //col2
         if (player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8))
         {
             winner = 1
+            println("player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8) \n")
         }
         if (player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8))
         {
             winner = 2
+            println("player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8) \n")
         }
         //col3
         if (player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9))
         {
             winner = 1
+            println("player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9) \n")
         }
         if (player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9))
         {
             winner = 2
+            println("player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9) \n")
         }
         //cross1
         if (player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9))
         {
             winner = 1
+            println("player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9) \n")
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9))
         {
             winner = 2
+            println("player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9) \n")
         }
         //cross2
         if (player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7))
         {
             winner = 1
+            println("player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7) \n")
         }
         if (player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7))
         {
             winner = 2
+            println("player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7) \n")
         }
+
         if (winner != -1)
         {
+            println("there is a winner \n")
             if (winner == 1)
             {
+                println("if (winner == 1) \n")
                 if(setPlayer == 1) {
+                    println("if(setPlayer == 1) \n")
                     Toast.makeText(this, "Player 1 Wins!!", Toast.LENGTH_SHORT).show()
+                    println("player_1 wins \n")
                     stopTouch()
                 }
                 else
                 {
+                    println("setPlayer not 1 \n")
                     Toast.makeText(this, "You Won!!", Toast.LENGTH_SHORT).show()
+                    println("You Won!! \n")
                     stopTouch()
                 }
             }
             else
             {
+                println("winner is -1) \n")
                 if (setPlayer == 1) {
+                    println("if(setPlayer == 1) \n")
                     Toast.makeText(this, "Player 2 Wins!!", Toast.LENGTH_SHORT).show()
+                    println("player 2 wins \n")
                     stopTouch()
                 }
                 else
                 {
+                    println("else set player was not 1 \n")
                     Toast.makeText(this, "CPU Wins!!", Toast.LENGTH_SHORT).show()
+                    println("CPU Wins \n")
                     stopTouch()
                 }
             }
@@ -256,6 +285,7 @@ class MainActivity : AppCompatActivity() {
 
     fun stopTouch()
     {
+        println("in stopTouch() function \n")
         button1.isEnabled = false
         button2.isEnabled = false
         button3.isEnabled = false
@@ -269,18 +299,8 @@ class MainActivity : AppCompatActivity() {
 
     fun AutoPlay()
     {
-        //create ArrayList to keep track of available spots that are on the board
-        val emptyCells = ArrayList<Int>()
+        println("In AutoPlay() function \n")
 
-        for (cellId in 1..9) {//cellId is alias for values that are looped from 1 - 9
-            if (!player_1.moves.contains(cellId) && !player_2.moves.contains(cellId))//if current value isn't occupied by player 1 and 2 add value to "emptyCells" list
-            { emptyCells.add(cellId) }//end of if staement
-        }//end of forloop
-
-
-//        val r = Random()
-//        val randomIndex = r.nextInt(emptyCells.size-0)+0
-//        val cellId = emptyCells[randomIndex]
         val buSelect:ImageButton?
         //CPU_List.add(cellId)
         val cellId = cpu.boardTranslator(cpu.findBestMove(boardBuilder()))
@@ -298,80 +318,81 @@ class MainActivity : AppCompatActivity() {
             9 -> buSelect = button9
             else -> buSelect = button1
         }//end of when block "cellId"
-        if(cellId == bomb){removePiece(cellId, buSelect)}
-        PlayGame(cellId,buSelect)
+
+//        if(cellId == bomb){removePiece(cellId, buSelect)}
+        playGame(cellId,buSelect)
         boardBuilder()
     }
 
-    /**************************************************
+    /***************************************************
      ***************************************************
      **This function places a random bomb on the board**
      ***************************************************
      ****************************************************/
     fun placeBomb(){
-        println("In placeBomb function")
+        println("In placeBomb function \n")
         val r = Random()
         bomb = r.nextInt(9)+1
         val removeAtIndex: Int
-
+        println("Bomb set: $bomb")
         if(player_1.moves.contains(bomb)){
-            println("In placeBomb function player_1.moves bomb")
+            println("In placeBomb function player_1.moves contains bomb \n")
+            println("In placeBomb function before remove player_1 moves ${player_1.moves.toString()} \n")
             removeAtIndex = player_1.moves.indexOf(bomb)
             player_1.moves.removeAt(removeAtIndex)
+            println("In placeBomb function after remove player_1 moves ${player_1.moves.toString()} \n")
             sweepBoard(bomb)
         }else if(player_2.moves.contains(bomb)){
-            println("In placeBomb function player_2.moves bomb")
+            println("In placeBomb function player_2.moves contains bomb \n")
+            println("In placeBomb function before remove player_2 moves ${player_2.moves.toString()} \n")
             removeAtIndex = player_2.moves.indexOf(bomb)
             player_2.moves.removeAt(removeAtIndex)
-            sweepBoard(bomb)
-        }else if(CPU_List.contains(bomb)){
-            println("In placeBomb function CPU bomb")
-            removeAtIndex = CPU_List.indexOf(bomb)
-            CPU_List.removeAt(removeAtIndex)
-            boardBuilder()
+            println("In placeBomb function after remove player_2 moves ${player_2.moves.toString()} \n")
             sweepBoard(bomb)
         }//end of else if statement
     }
 
+    fun breakFunction(cellId:Int,buSelected:ImageButton){
+        println("in breakFunction before checking for bombs")
+        buSelected.isEnabled = false
+        println("in playGame function before checking for bombs")
+        println("button ${buSelected.id} enabled = ${buSelected.isEnabled} \n")
+        if(cellId == bomb){removePiece(cellId, buSelected)}
+        println("in playGame function after checking for bombs")
+        println("button ${buSelected.id} enabled = ${buSelected.isEnabled} \n")
+        boardBuilder()
+        CheckWinner()
+    }
+
     fun removePiece(cellId:Int, buSelected:ImageButton){
-        println("In removePiece function")
+        println("In removePiece function \n")
         val removeAtIndex: Int
         print("\n")
         if(player_1.moves.contains(bomb)){
             buSelected.setImageResource(R.drawable.deafualt_button)
             println("Player_1 contains bomb")
-            println("bomb is = $bomb")
+            println("bomb is = $bomb \n")
             println(player_1.moves.toString())
             removeAtIndex = player_1.moves.indexOf(bomb)
             println("removeAtIndex is $removeAtIndex")
-            println("New player_1.moves index")
+            println("New player_1.moves index \n")
             player_1.moves.removeAt(removeAtIndex)
             println(player_1.moves.toString())
         }else if(player_2.moves.contains(bomb)){
             buSelected.setImageResource(R.drawable.deafualt_button)
             println("Player_2 contains bomb")
-            println("bomb is = $bomb")
+            println("bomb is = $bomb \n")
             println(player_2.moves.toString())
             removeAtIndex = player_2.moves.indexOf(bomb)
             println("removeAtIndex is $removeAtIndex")
-            println("New player_2.moves index")
+            println("New player_2.moves index \n")
             player_2.moves.removeAt(removeAtIndex)
             println(player_2.moves.toString())
-        }else if(CPU_List.contains(bomb)){
-            buSelected.setImageResource(R.drawable.deafualt_button)
-            println("CPU_List contains bomb")
-            println("bomb is = $bomb")
-            println(CPU_List.toString())
-            removeAtIndex = CPU_List.indexOf(bomb)
-            println("removeAtIndex is $removeAtIndex")
-            println("New CPU_List index")
-            CPU_List.removeAt(removeAtIndex)
-            println(CPU_List.toString())
-            boardBuilder()
-        }//end of else if blcok "CPU_List.contains(bomb)"
+        }
 
+        println("in remove function before button re enabled ${buSelected.isEnabled}")
         buSelected.isEnabled = true
-        println("The button ${buSelected.id} is enabled ${buSelected.isEnabled}")
+        println("in remove function The button ${buSelected.id} after button is enabled ${buSelected.isEnabled}")
         placeBomb()
     }
 
@@ -392,10 +413,14 @@ class MainActivity : AppCompatActivity() {
             else -> buSelect = button1
         }
 
+        println("sweep function before button re enabled ${buSelect.id} is enabled = ${buSelect.isEnabled}")
         buSelect.setImageResource(R.drawable.deafualt_button)
         buSelect.isEnabled = true
+        println("sweep function after but before place bomb button re enabled ${buSelect.id} is enabled = ${buSelect.isEnabled}")
         placeBomb()
+        println("sweep function after button re enabled ${buSelect.id} is enabled = ${buSelect.isEnabled}")
         boardBuilder()
+        println("exit sweep function")
     }
 
     fun boardBuilder(): Array<CharArray>{
