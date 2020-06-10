@@ -29,7 +29,129 @@ class MainActivity : AppCompatActivity() {
     var setPlayer = 2
     var bomb: Int = 1
     val cpu = Cpu()
-    var CheckWinner = {
+
+    var animationDrawable_1 = AnimationDrawable()
+    var animationDrawable_2 = AnimationDrawable()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        inflate()
+    }
+
+    private fun inflate() {
+        player_1.src = R.drawable.neon_blue_x
+        player_1.srcSetAnimation = R.drawable.x_animation
+        player_2.src = R.drawable.neon_red_o
+        player_2.srcSetAnimation = R.drawable.heart_animation
+        placeBomb()
+    }
+
+    fun restartGame(view: View)
+    {
+        placeBomb()
+        button1.setImageResource(R.drawable.deafualt_button)
+        button2.setImageResource(R.drawable.deafualt_button)
+        button3.setImageResource(R.drawable.deafualt_button)
+        button4.setImageResource(R.drawable.deafualt_button)
+        button5.setImageResource(R.drawable.deafualt_button)
+        button6.setImageResource(R.drawable.deafualt_button)
+        button7.setImageResource(R.drawable.deafualt_button)
+        button8.setImageResource(R.drawable.deafualt_button)
+        button9.setImageResource(R.drawable.deafualt_button)
+
+        player_1.moves.clear()
+        player_2.moves.clear()
+
+        ActivePlayer = 1
+        button1.isEnabled = true
+        button2.isEnabled = true
+        button3.isEnabled = true
+        button4.isEnabled = true
+        button5.isEnabled = true
+        button6.isEnabled = true
+        button7.isEnabled = true
+        button8.isEnabled = true
+        button9.isEnabled = true
+        setPlayer = 2
+
+        PVP.setBackgroundColor(android.R.drawable.btn_default)
+        PVC.setBackgroundColor(Color.CYAN)
+    }
+
+    fun buttonClick(view: View)
+    {
+        val buSelected: ImageButton = view as ImageButton
+        var cellId = 0
+        when(buSelected.id)
+        {
+            R.id.button1 -> cellId = 1
+            R.id.button2 -> cellId = 2
+            R.id.button3 -> cellId = 3
+            R.id.button4 -> cellId = 4
+            R.id.button5 -> cellId = 5
+            R.id.button6 -> cellId = 6
+            R.id.button7 -> cellId = 7
+            R.id.button8 -> cellId = 8
+            R.id.button9 -> cellId = 9
+        }
+        playGame(cellId,buSelected)
+    }
+
+    fun PlayerChoose(view:View)
+    {
+        val ps:Button = view as Button
+        when(ps.id)
+        {
+            R.id.PVP -> {
+                setPlayer = 1
+                ps.setBackgroundColor(Color.CYAN)
+                PVC.setBackgroundColor(android.R.drawable.btn_default)
+            }
+            R.id.PVC -> {
+                setPlayer = 2
+                ps.setBackgroundColor(Color.CYAN)
+                PVP.setBackgroundColor(android.R.drawable.btn_default)
+            }
+        }
+    }
+
+    fun playGame(cellId:Int,buSelected:ImageButton)
+    {
+        println("in playGame(cellId:Int,buSelected:ImageButton) function")
+        if (ActivePlayer == 1)
+        {
+            println("player_1 play")
+            buSelected.setImageResource(player_1.src)
+
+            player_1.moves.add(cellId)
+            breakFunction(cellId,buSelected)
+            ActivePlayer = 2
+            if (setPlayer == 1)
+            {}
+            else
+            {
+                try {
+                    AutoPlay()
+                }catch (ex:Exception)
+                {
+                    Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show()
+                }//end of catch block
+            }//end of else block
+        }//end of if block "ActivePlayer == 1"
+        else
+        {
+            println("player_2 play")
+            buSelected.setImageResource(player_2.src)
+
+            player_2.moves.add(cellId)
+            ActivePlayer = 1
+            breakFunction(cellId,buSelected)
+        }//end of else block
+    }
+
+    fun CheckWinner()
+    {
         println("in CheckWinner() function \n")
         var winner = -1
         //row1
@@ -161,259 +283,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    var animationDrawable_1 = AnimationDrawable()
-    var animationDrawable_2 = AnimationDrawable()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        inflate()
-    }
-
-    private fun inflate() {
-        player_1.src = R.drawable.neon_blue_x
-        player_1.srcSetAnimation = R.drawable.x_animation
-        player_2.src = R.drawable.neon_red_o
-        player_2.srcSetAnimation = R.drawable.heart_animation
-        placeBomb()
-    }
-
-    fun restartGame(view: View)
-    {
-        placeBomb()
-        button1.setImageResource(R.drawable.deafualt_button)
-        button2.setImageResource(R.drawable.deafualt_button)
-        button3.setImageResource(R.drawable.deafualt_button)
-        button4.setImageResource(R.drawable.deafualt_button)
-        button5.setImageResource(R.drawable.deafualt_button)
-        button6.setImageResource(R.drawable.deafualt_button)
-        button7.setImageResource(R.drawable.deafualt_button)
-        button8.setImageResource(R.drawable.deafualt_button)
-        button9.setImageResource(R.drawable.deafualt_button)
-
-        player_1.moves.clear()
-        player_2.moves.clear()
-
-        ActivePlayer = 1
-        button1.isEnabled = true
-        button2.isEnabled = true
-        button3.isEnabled = true
-        button4.isEnabled = true
-        button5.isEnabled = true
-        button6.isEnabled = true
-        button7.isEnabled = true
-        button8.isEnabled = true
-        button9.isEnabled = true
-        setPlayer = 2
-
-        PVP.setBackgroundColor(android.R.drawable.btn_default)
-        PVC.setBackgroundColor(Color.CYAN)
-    }
-
-    fun buttonClick(view: View)
-    {
-        val buSelected: ImageButton = view as ImageButton
-        var cellId = 0
-        when(buSelected.id)
-        {
-            R.id.button1 -> cellId = 1
-            R.id.button2 -> cellId = 2
-            R.id.button3 -> cellId = 3
-            R.id.button4 -> cellId = 4
-            R.id.button5 -> cellId = 5
-            R.id.button6 -> cellId = 6
-            R.id.button7 -> cellId = 7
-            R.id.button8 -> cellId = 8
-            R.id.button9 -> cellId = 9
-        }
-        playGame(cellId,buSelected)
-    }
-
-    fun PlayerChoose(view:View)
-    {
-        val ps:Button = view as Button
-        when(ps.id)
-        {
-            R.id.PVP -> {
-                setPlayer = 1
-                ps.setBackgroundColor(Color.CYAN)
-                PVC.setBackgroundColor(android.R.drawable.btn_default)
-            }
-            R.id.PVC -> {
-                setPlayer = 2
-                ps.setBackgroundColor(Color.CYAN)
-                PVP.setBackgroundColor(android.R.drawable.btn_default)
-            }
-        }
-    }
-
-    fun playGame(cellId:Int,buSelected:ImageButton)
-    {
-        println("in playGame(cellId:Int,buSelected:ImageButton) function")
-        if (ActivePlayer == 1)
-        {
-            println("player_1 play")
-            buSelected.setImageResource(player_1.src)
-
-            player_1.moves.add(cellId)
-            breakFunction(cellId,buSelected,CheckWinner)
-            ActivePlayer = 2
-            if (setPlayer == 1)
-            {}
-            else
-            {
-                try {
-                    AutoPlay()
-                }catch (ex:Exception)
-                {
-                    Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show()
-                }//end of catch block
-            }//end of else block
-        }//end of if block "ActivePlayer == 1"
-        else
-        {
-            println("player_2 play")
-            buSelected.setImageResource(player_2.src)
-
-            player_2.moves.add(cellId)
-            ActivePlayer = 1
-            breakFunction(cellId,buSelected,CheckWinner)
-        }//end of else block
-    }
-
-    fun CheckWinner()
-    {
-        println("in CheckWinner() function \n")
-        var winner = -1
-        //row1
-        if (player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3))
-        {
-            winner = 1
-            println("player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3) \n")
-        }
-        if (player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3))
-        {
-            winner = 2
-            println("player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3) \n")
-        }
-        //row2
-        if (player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6))
-        {
-            winner = 1
-            println("player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6) \n")
-        }
-        if (player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6))
-        {
-            winner = 2
-            println("player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6) \n")
-        }
-        //row3
-        if (player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9))
-        {
-            winner = 1
-            println("player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9) \n")
-        }
-        if (player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9))
-        {
-            winner = 2
-            println("player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9) \n")
-        }
-        //col1
-        if (player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7))
-        {
-            winner = 1
-            println("player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7) \n")
-        }
-        if (player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7))
-        {
-            winner = 2
-            println("player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7) \n")
-        }
-        //col2
-        if (player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8))
-        {
-            winner = 1
-            println("player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8) \n")
-        }
-        if (player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8))
-        {
-            winner = 2
-            println("player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8) \n")
-        }
-        //col3
-        if (player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9))
-        {
-            winner = 1
-            println("player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9) \n")
-        }
-        if (player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9))
-        {
-            winner = 2
-            println("player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9) \n")
-        }
-        //cross1
-        if (player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9))
-        {
-            winner = 1
-            println("player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9) \n")
-        }
-        if (player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9))
-        {
-            winner = 2
-            println("player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9) \n")
-        }
-        //cross2
-        if (player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7))
-        {
-            winner = 1
-            println("player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7) \n")
-        }
-        if (player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7))
-        {
-            winner = 2
-            println("player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7) \n")
-        }
-
-        if (winner != -1)
-        {
-            println("there is a winner \n")
-            if (winner == 1)
-            {
-                println("if (winner == 1) \n")
-                if(setPlayer == 1) {
-                    println("if(setPlayer == 1) \n")
-                    Toast.makeText(this, "Player 1 Wins!! SIKE", Toast.LENGTH_SHORT).show()
-                    println("player_1 wins \n")
-                    stopTouch()
-                }
-                else
-                {
-                    println("setPlayer not 1 \n")
-                    Toast.makeText(this, "You Won!! SIKE", Toast.LENGTH_SHORT).show()
-                    println("You Won!! \n")
-                    stopTouch()
-                }
-            }
-            else
-            {
-                println("winner is -1) \n")
-                if (setPlayer == 1) {
-                    println("if(setPlayer == 1) \n")
-                    Toast.makeText(this, "Player 2 Wins!! SIKE", Toast.LENGTH_SHORT).show()
-                    println("player 2 wins \n")
-                    stopTouch()
-                }
-                else
-                {
-                    println("else set player was not 1 \n")
-                    Toast.makeText(this, "CPU Wins!! SIKE", Toast.LENGTH_SHORT).show()
-                    println("CPU Wins \n")
-                    stopTouch()
-                }
-            }
-        }
-    }
-
     fun stopTouch()
     {
         println("in stopTouch() function \n")
@@ -483,7 +352,7 @@ class MainActivity : AppCompatActivity() {
         }//end of else if statement
     }
 
-    fun breakFunction(cellId:Int, buSelected:ImageButton, CheckWinner: () -> Unit){
+    fun breakFunction(cellId:Int, buSelected:ImageButton){
         println("in breakFunction before checking for bombs")
         buSelected.isEnabled = false
         println("in playGame function before checking for bombs")
