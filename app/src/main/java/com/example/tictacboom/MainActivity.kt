@@ -122,10 +122,12 @@ class MainActivity : AppCompatActivity() {
         if (ActivePlayer == 1)
         {
             println("player_1 play")
-            buSelected.setImageResource(player_1.src)
-
             player_1.moves.add(cellId)
-            breakFunction(cellId,buSelected)
+            setPlayer_1_Animation(buSelected,R.drawable.x_animation)
+            vanishAnimations()
+
+            breakFunction(cellId,buSelected,player_1.src)
+
             ActivePlayer = 2
             if (setPlayer == 1)
             {}
@@ -142,11 +144,13 @@ class MainActivity : AppCompatActivity() {
         else
         {
             println("player_2 play")
-            buSelected.setImageResource(player_2.src)
-
             player_2.moves.add(cellId)
             ActivePlayer = 1
-            breakFunction(cellId,buSelected)
+            setPlayer_2_Animation(buSelected,R.drawable.heart_animation)
+            vanishAnimations()
+
+            breakFunction(cellId,buSelected,player_2.src)
+
         }//end of else block
     }
 
@@ -352,13 +356,15 @@ class MainActivity : AppCompatActivity() {
         }//end of else if statement
     }
 
-    fun breakFunction(cellId:Int, buSelected:ImageButton){
+    fun breakFunction(cellId: Int, buSelected: ImageButton, player_src: Int){
         println("in breakFunction before checking for bombs")
         buSelected.isEnabled = false
         println("in playGame function before checking for bombs")
         println("button ${buSelected.id} enabled = ${buSelected.isEnabled} \n")
         if(cellId == bomb){removePiece(cellId, buSelected)
-        }else{CheckWinner()}
+        }else{
+            buSelected.setImageResource(player_src)
+            CheckWinner()}
         println("in playGame function after checking for bombs")
         println("button ${buSelected.id} enabled = ${buSelected.isEnabled} \n")
         boardBuilder()
@@ -470,6 +476,164 @@ class MainActivity : AppCompatActivity() {
         return board
 
     }//end of "boardBuilder" function
+
+    fun vanishAnimations(){
+
+        animationDrawable_1.onAnimationFinished {
+            imageView_1.visibility = View.GONE
+            imageView_2.visibility = View.GONE
+            imageView_3.visibility = View.GONE
+            imageView_4.visibility = View.GONE
+            imageView_5.visibility = View.GONE
+            imageView_6.visibility = View.GONE
+            imageView_7.visibility = View.GONE
+            imageView_8.visibility = View.GONE
+            imageView_9.visibility = View.GONE
+            animationDrawable_1.stop()
+        }
+
+        animationDrawable_2.onAnimationFinished {
+            imageView_1.visibility = View.GONE
+            imageView_2.visibility = View.GONE
+            imageView_3.visibility = View.GONE
+            imageView_4.visibility = View.GONE
+            imageView_5.visibility = View.GONE
+            imageView_6.visibility = View.GONE
+            imageView_7.visibility = View.GONE
+            imageView_8.visibility = View.GONE
+            imageView_9.visibility = View.GONE
+            animationDrawable_2.stop()
+        }
+
+    }
+
+    fun setPlayer_1_Animation(view: ImageButton, animationId: Int){
+        val buSelected: ImageButton = view as ImageButton
+
+        when(buSelected.id)
+        {
+            R.id.button1 ->{
+                imageView_1.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_1.background as AnimationDrawable
+                imageView_1.visibility = View.VISIBLE
+                animationDrawable_1.start()
+                //animationDrawable_1.setVisible(false, false)
+                //animationDrawable_1.stop()
+            }//end of R.id.button1
+            R.id.button2 -> {
+                imageView_2.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_2.background as AnimationDrawable
+                imageView_2.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button2
+            R.id.button3 ->{
+                imageView_3.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_3.background as AnimationDrawable
+                imageView_3.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button3
+            R.id.button4 ->{
+                imageView_4.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_4.background as AnimationDrawable
+                imageView_4.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button4
+            R.id.button5 ->{
+                imageView_5.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_5.background as AnimationDrawable
+                imageView_5.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button5
+            R.id.button6 ->{
+                imageView_6.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_6.background as AnimationDrawable
+                imageView_6.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button6
+            R.id.button7 ->{
+                imageView_7.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_7.background as AnimationDrawable
+                imageView_7.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button7
+            R.id.button8 ->{
+                imageView_8.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_8.background as AnimationDrawable
+                imageView_8.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of R.id.button8
+            else ->{
+                imageView_9.setBackgroundResource(animationId)
+                animationDrawable_1 = imageView_9.background as AnimationDrawable
+                imageView_9.visibility = View.VISIBLE
+                animationDrawable_1.start()
+            }//end of else block
+        }//end of when block
+    }//end of setPlayer_1_Animation function
+
+    fun setPlayer_2_Animation(view: ImageButton, animationId: Int){
+        val buSelected: ImageButton = view as ImageButton
+
+        when(buSelected.id)
+        {
+            R.id.button1 ->{
+                imageView_1.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_1.background as AnimationDrawable
+                imageView_1.visibility = View.VISIBLE
+                animationDrawable_2.start()
+                //animationDrawable_1.setVisible(false, false)
+                //animationDrawable_1.stop()
+            }//end of R.id.button1
+            R.id.button2 -> {
+                imageView_2.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_2.background as AnimationDrawable
+                imageView_2.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button2
+            R.id.button3 ->{
+                imageView_3.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_3.background as AnimationDrawable
+                imageView_3.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button3
+            R.id.button4 ->{
+                imageView_4.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_4.background as AnimationDrawable
+                imageView_4.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button4
+            R.id.button5 ->{
+                imageView_5.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_5.background as AnimationDrawable
+                imageView_5.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button5
+            R.id.button6 ->{
+                imageView_6.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_6.background as AnimationDrawable
+                imageView_6.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button6
+            R.id.button7 ->{
+                imageView_7.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_7.background as AnimationDrawable
+                imageView_7.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button7
+            R.id.button8 ->{
+                imageView_8.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_8.background as AnimationDrawable
+                imageView_8.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of R.id.button8
+            else ->{
+                imageView_9.setBackgroundResource(animationId)
+                animationDrawable_2 = imageView_9.background as AnimationDrawable
+                imageView_9.visibility = View.VISIBLE
+                animationDrawable_2.start()
+            }//end of else block
+        }//end of when block
+    }//end of setPlayer_2_Animation function
 
     fun AnimationDrawable.onAnimationFinished(block: () -> Unit) {
         var duration: Long = 0
