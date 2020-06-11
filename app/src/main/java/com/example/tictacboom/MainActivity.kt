@@ -1,5 +1,8 @@
 package com.example.tictacboom
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -11,7 +14,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.animation.doOnEnd
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,10 +48,14 @@ class MainActivity : AppCompatActivity() {
     private fun inflate() {
         player_1.src = R.drawable.neon_blue_x
         player_1.srcSetAnimation = R.drawable.x_animation
+        player_1.srcBoomAnimation = R.drawable.neon_blue_x_boom
         player_2.src = R.drawable.neon_red_o
         player_2.srcSetAnimation = R.drawable.heart_animation
+        player_2.srcBoomAnimation = R.drawable.neon_red_o_boom
+
         placeBomb()
     }
+
 
     fun restartGame(view: View)
     {
@@ -323,7 +333,6 @@ class MainActivity : AppCompatActivity() {
             else -> buSelect = button1
         }//end of when block "cellId"
 
-//        if(cellId == bomb){removePiece(cellId, buSelect)}
         playGame(cellId,buSelect)
         boardBuilder()
     }
@@ -342,6 +351,7 @@ class MainActivity : AppCompatActivity() {
         if(player_1.moves.contains(bomb)){
             println("In placeBomb function player_1.moves contains bomb \n")
             println("In placeBomb function before remove player_1 moves ${player_1.moves.toString()} \n")
+            boomAnimate(getBoomImage(player_1.srcBoomAnimation))
             removeAtIndex = player_1.moves.indexOf(bomb)
             player_1.moves.removeAt(removeAtIndex)
             println("In placeBomb function after remove player_1 moves ${player_1.moves.toString()} \n")
@@ -349,6 +359,7 @@ class MainActivity : AppCompatActivity() {
         }else if(player_2.moves.contains(bomb)){
             println("In placeBomb function player_2.moves contains bomb \n")
             println("In placeBomb function before remove player_2 moves ${player_2.moves.toString()} \n")
+            boomAnimate(getBoomImage(player_2.srcBoomAnimation))
             removeAtIndex = player_2.moves.indexOf(bomb)
             player_2.moves.removeAt(removeAtIndex)
             println("In placeBomb function after remove player_2 moves ${player_2.moves.toString()} \n")
@@ -375,6 +386,7 @@ class MainActivity : AppCompatActivity() {
         val removeAtIndex: Int
         print("\n")
         if(player_1.moves.contains(bomb)){
+            boomAnimate(getBoomImage(player_1.srcBoomAnimation))
             buSelected.setImageResource(R.drawable.deafualt_button)
             println("Player_1 contains bomb")
             println("bomb is = $bomb \n")
@@ -386,6 +398,7 @@ class MainActivity : AppCompatActivity() {
             println(player_1.moves.toString())
         }else if(player_2.moves.contains(bomb)){
             buSelected.setImageResource(R.drawable.deafualt_button)
+            boomAnimate(getBoomImage(player_2.srcBoomAnimation))
             println("Player_2 contains bomb")
             println("bomb is = $bomb \n")
             println(player_2.moves.toString())
@@ -645,4 +658,88 @@ class MainActivity : AppCompatActivity() {
         }, duration + 200)
     }
 
+    fun getBoomImage(srcImage: Int): ImageView{
+        val boomImage: ImageView
+
+        when(bomb)
+        {
+            1 -> boomImage = imageViewBoom_1
+            2 -> boomImage = imageViewBoom_2
+            3 -> boomImage = imageViewBoom_3
+            4 -> boomImage = imageViewBoom_4
+            5 -> boomImage = imageViewBoom_5
+            6 -> boomImage = imageViewBoom_6
+            7 -> boomImage = imageViewBoom_7
+            8 -> boomImage = imageViewBoom_8
+            else -> boomImage = imageViewBoom_9
+        }//end of when(bomb) block
+
+        boomImage.setBackgroundResource(srcImage)
+
+        return boomImage
+    }//end of getBoomImage function
+
+    fun boomAnimate(boomImage: ImageView){
+        boomImage.visibility = View.VISIBLE
+
+        val translation_x = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 200f)
+
+        val translation_y = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 200f)
+
+        val scale_x = PropertyValuesHolder.ofFloat(View.SCALE_X, 4f)
+
+        val scale_y = PropertyValuesHolder.ofFloat(View.SCALE_Y, 4f)
+
+        val rotate = PropertyValuesHolder.ofFloat(View.ROTATION, -1836f, 0f)
+
+        //--------------------------------------------------------------------------------------------------------
+        val negative_translation_x = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f)
+
+        val negative_translation_y = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0f)
+
+        val negative_scale_x = PropertyValuesHolder.ofFloat(View.SCALE_X, 0f)
+
+        val negative_scale_y = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+
+
+        //--------------------------------------------------------------------------------------------------------
+
+        val objectAnimation = ObjectAnimator.ofPropertyValuesHolder(boomImage,translation_x,translation_y,scale_x,scale_y,rotate)
+        val negative_objectAnimation = ObjectAnimator.ofPropertyValuesHolder(boomImage,negative_translation_x,negative_translation_y,negative_scale_x,negative_scale_y)
+
+        negative_objectAnimation.repeatCount = 0
+
+        objectAnimation.repeatCount = 1
+
+        println("is animation object running  before start ${objectAnimation.isRunning}")
+        objectAnimation.repeatMode = ObjectAnimator.RESTART
+
+        objectAnimation.start()
+
+        objectAnimation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+                boomImage.visibility = View.INVISIBLE
+                negative_objectAnimation.start()
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+
+            override fun onAnimationRepeat(animation: Animator) {}
+        })//end of objectAnimation.addListener block
+
+        negative_objectAnimation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                // 3
+                boomImage.visibility = View.INVISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animator) {}
+
+            override fun onAnimationCancel(animation: Animator) {}
+
+            override fun onAnimationRepeat(animation: Animator) {}
+        })//end of negative_objectAnimation.addListener block
+    }//end of boomAnimate function
 }
