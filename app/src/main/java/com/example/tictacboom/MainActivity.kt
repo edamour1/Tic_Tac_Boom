@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     var animationDrawable_1 = AnimationDrawable()
     var animationDrawable_2 = AnimationDrawable()
+    var animationDrawable_3 = AnimationDrawable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +85,9 @@ class MainActivity : AppCompatActivity() {
         button8.isEnabled = true
         button9.isEnabled = true
         setPlayer = 2
+
+        imageLine.visibility = View.INVISIBLE
+        animationDrawable_3.stop()
 
         PVP.setBackgroundColor(android.R.drawable.btn_default)
         PVC.setBackgroundColor(Color.CYAN)
@@ -164,97 +168,115 @@ class MainActivity : AppCompatActivity() {
         }//end of else block
     }
 
-    fun CheckWinner()
+    fun checkWinner()
     {
         println("in CheckWinner() function \n")
         var winner = -1
+        var line = 0
         //row1
         if (player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3))
         {
             winner = 1
             println("player_1.moves.contains(1) && player_1.moves.contains(2) && player_1.moves.contains(3) \n")
+            line = R.drawable.horizontal_top_animation
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3))
         {
             winner = 2
             println("player_2.moves.contains(1) && player_2.moves.contains(2) && player_2.moves.contains(3) \n")
+            line = R.drawable.horizontal_top_animation
         }
         //row2
         if (player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6))
         {
             winner = 1
             println("player_1.moves.contains(4) && player_1.moves.contains(5) && player_1.moves.contains(6) \n")
+            line = R.drawable.horizontal_line_animation
         }
         if (player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6))
         {
             winner = 2
             println("player_2.moves.contains(4) && player_2.moves.contains(5) && player_2.moves.contains(6) \n")
+            line = R.drawable.horizontal_line_animation
         }
         //row3
         if (player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9))
         {
             winner = 1
             println("player_1.moves.contains(7) && player_1.moves.contains(8) && player_1.moves.contains(9) \n")
+            line = R.drawable.horizontal_bottom_animation
         }
         if (player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9))
         {
             winner = 2
             println("player_2.moves.contains(7) && player_2.moves.contains(8) && player_2.moves.contains(9) \n")
+            line = R.drawable.horizontal_bottom_animation
         }
         //col1
         if (player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7))
         {
             winner = 1
             println("player_1.moves.contains(1) && player_1.moves.contains(4) && player_1.moves.contains(7) \n")
+            line = R.drawable.vertical_left_animation
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7))
         {
             winner = 2
             println("player_2.moves.contains(1) && player_2.moves.contains(4) && player_2.moves.contains(7) \n")
+            line = R.drawable.vertical_left_animation
         }
         //col2
         if (player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8))
         {
             winner = 1
             println("player_1.moves.contains(2) && player_1.moves.contains(5) && player_1.moves.contains(8) \n")
+            line = R.drawable.vertical_line_animation
         }
         if (player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8))
         {
             winner = 2
             println("player_2.moves.contains(2) && player_2.moves.contains(5) && player_2.moves.contains(8) \n")
+            line = R.drawable.vertical_line_animation
         }
         //col3
         if (player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9))
         {
             winner = 1
             println("player_1.moves.contains(3) && player_1.moves.contains(6) && player_1.moves.contains(9) \n")
+            line = R.drawable.vertical_right_animation
         }
         if (player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9))
         {
             winner = 2
             println("player_2.moves.contains(3) && player_2.moves.contains(6) && player_2.moves.contains(9) \n")
+            line = R.drawable.vertical_right_animation
         }
         //cross1
         if (player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9))
         {
             winner = 1
             println("player_1.moves.contains(1) && player_1.moves.contains(5) && player_1.moves.contains(9) \n")
+            line = R.drawable.negative_slope_line
         }
         if (player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9))
         {
             winner = 2
             println("player_2.moves.contains(1) && player_2.moves.contains(5) && player_2.moves.contains(9) \n")
+            line = R.drawable.negative_slope_line
         }
         //cross2
         if (player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7))
         {
             winner = 1
             println("player_1.moves.contains(3) && player_1.moves.contains(5) && player_1.moves.contains(7) \n")
+            line = R.drawable.positive_slope_line
         }
+
         if (player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7))
         {
             winner = 2
             println("player_2.moves.contains(3) && player_2.moves.contains(5) && player_2.moves.contains(7) \n")
+            line = R.drawable.positive_slope_line
         }
 
         if (winner != -1)
@@ -268,6 +290,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Player 1 Wins!!", Toast.LENGTH_SHORT).show()
                     println("player_1 wins \n")
                     stopTouch()
+                    winningLineAnimate(line)
                 }
                 else
                 {
@@ -275,6 +298,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "You Won!!", Toast.LENGTH_SHORT).show()
                     println("You Won!! \n")
                     stopTouch()
+                    winningLineAnimate(line)
                 }
             }
             else
@@ -285,6 +309,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Player 2 Wins!!", Toast.LENGTH_SHORT).show()
                     println("player 2 wins \n")
                     stopTouch()
+                    winningLineAnimate(line)
                 }
                 else
                 {
@@ -292,6 +317,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "CPU Wins!!", Toast.LENGTH_SHORT).show()
                     println("CPU Wins \n")
                     stopTouch()
+                    winningLineAnimate(line)
                 }
             }
         }
@@ -375,7 +401,7 @@ class MainActivity : AppCompatActivity() {
         if(cellId == bomb){removePiece(cellId, buSelected)
         }else{
             buSelected.setImageResource(player_src)
-            CheckWinner()}
+            checkWinner()}
         println("in playGame function after checking for bombs")
         println("button ${buSelected.id} enabled = ${buSelected.isEnabled} \n")
         boardBuilder()
@@ -742,4 +768,14 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(animation: Animator) {}
         })//end of negative_objectAnimation.addListener block
     }//end of boomAnimate function
+
+    fun winningLineAnimate(lineId: Int){
+        println("in winningLineAnimate")
+        imageLine.visibility = View.VISIBLE
+        imageLine.setBackgroundResource(lineId)
+        animationDrawable_3 = imageLine.background as AnimationDrawable
+        animationDrawable_3.start()
+//        animationDrawable_3.onAnimationFinished {imageLine.setBackgroundResource(R.drawable.line_horizontal_1)}
+        println("is animationDrawable_3 running = ${animationDrawable_3.isRunning}")
+    }
 }

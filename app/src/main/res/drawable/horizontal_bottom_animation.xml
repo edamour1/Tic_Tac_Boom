@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/line_horizontal_1_bottom" android:duration="50"/>
+    <item android:drawable="@drawable/line_horizontal_2_bottom" android:duration="50"/>
+    <item android:drawable="@drawable/line_horizontal_3_bottom" android:duration="50"/>
+</animation-list>
