@@ -19,6 +19,8 @@ import android.widget.Toast
 import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import android.media.AudioManager
+import android.media.SoundPool
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -40,6 +42,12 @@ class MainActivity : AppCompatActivity() {
     var animationDrawable_2 = AnimationDrawable()
     var animationDrawable_3 = AnimationDrawable()
 
+    private var soundPool_pieces_flip_off_board: SoundPool? = null
+    private var soundPool_set_sound: SoundPool? = null
+
+    private val soundId = 1
+    private val soundId_2 = 2
+    private val soundId_3 = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,10 +61,12 @@ class MainActivity : AppCompatActivity() {
         player_2.src = R.drawable.neon_red_o
         player_2.srcSetAnimation = R.drawable.heart_animation
         player_2.srcBoomAnimation = R.drawable.neon_red_o_boom
-
+        soundPool_pieces_flip_off_board = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
+        soundPool_pieces_flip_off_board!!.load(baseContext, R.raw.pieces_flip_off_board, 1)
+        soundPool_set_sound = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
+        soundPool_set_sound!!.load(baseContext, R.raw.set_sound, 1)
         placeBomb()
     }
-
 
     fun restartGame(view: View)
     {
@@ -148,7 +158,14 @@ class MainActivity : AppCompatActivity() {
             else
             {
                 try {
-                    AutoPlay()
+                    val thread = Thread {
+                        Thread.sleep(1000)
+                        runOnUiThread(Runnable {
+                            AutoPlay()
+                        })
+                    }
+                    thread.start()
+
                 }catch (ex:Exception)
                 {
                     Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show()
@@ -303,7 +320,8 @@ class MainActivity : AppCompatActivity() {
             }
             else
             {
-                println("winner is -1) \n")
+                println("winner" +
+                        " is -1) \n")
                 if (setPlayer == 1) {
                     println("if(setPlayer == 1) \n")
                     Toast.makeText(this, "Player 2 Wins!!", Toast.LENGTH_SHORT).show()
@@ -741,6 +759,7 @@ class MainActivity : AppCompatActivity() {
         objectAnimation.repeatMode = ObjectAnimator.RESTART
 
         objectAnimation.start()
+        playSoundPiecesFlipOffBoard()
 
         objectAnimation.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {}
@@ -778,4 +797,10 @@ class MainActivity : AppCompatActivity() {
 //        animationDrawable_3.onAnimationFinished {imageLine.setBackgroundResource(R.drawable.line_horizontal_1)}
         println("is animationDrawable_3 running = ${animationDrawable_3.isRunning}")
     }
+
+    fun playSoundPiecesFlipOffBoard() {
+        soundPool_pieces_flip_off_board?.play(soundId, 1F, 1F, 0, 0, 1F)
+        Toast.makeText(this, "Playing sound. . . .", Toast.LENGTH_SHORT).show()
+    }
+
 }
