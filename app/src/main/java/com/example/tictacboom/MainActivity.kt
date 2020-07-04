@@ -42,12 +42,13 @@ class MainActivity : AppCompatActivity() {
     var animationDrawable_2 = AnimationDrawable()
     var animationDrawable_3 = AnimationDrawable()
 
-    private var soundPool_pieces_flip_off_board: SoundPool? = null
+    private var soundPool: SoundPool? = null
     private var soundPool_set_sound: SoundPool? = null
 
     private val soundId = 1
     private val soundId_2 = 2
     private val soundId_3 = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,10 +62,15 @@ class MainActivity : AppCompatActivity() {
         player_2.src = R.drawable.neon_red_o
         player_2.srcSetAnimation = R.drawable.heart_animation
         player_2.srcBoomAnimation = R.drawable.neon_red_o_boom
-        soundPool_pieces_flip_off_board = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
-        soundPool_pieces_flip_off_board!!.load(baseContext, R.raw.pieces_flip_off_board, 1)
-        soundPool_set_sound = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
-        soundPool_set_sound!!.load(baseContext, R.raw.set_sound, 1)
+        soundPool = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
+        soundPool!!.load(baseContext, Sounds.BOMB_1_SOUND.sound, 0)
+        soundPool!!.load(baseContext, Sounds.CPU_POINT_SOUND.sound, 0)
+        soundPool!!.load(baseContext, Sounds.PIECES_FLIP_OFF_BOARD.sound, 0)
+        soundPool!!.load(baseContext, Sounds.PLAYER_POINT_SOUND.sound, 0)
+        soundPool!!.load(baseContext, Sounds.SET_SOUND.sound, 0)
+        soundPool!!.load(baseContext, Sounds.TIC_TAC_BOOM_INTRO.sound, 0)
+        soundPool!!.load(baseContext, Sounds.WINNER_CELEBRATE_SOUND.sound, 0)
+        soundPool!!.load(baseContext, Sounds.WINNING_LINE_SOUND.sound, 0)
         placeBomb()
     }
 
@@ -626,6 +632,8 @@ class MainActivity : AppCompatActivity() {
                 animationDrawable_1.start()
             }//end of else block
         }//end of when block
+        playSound(Sounds.SET_SOUND.soundId)
+        playSound(Sounds.SET_SOUND.soundId)
     }//end of setPlayer_1_Animation function
 
     fun setPlayer_2_Animation(view: ImageButton, animationId: Int){
@@ -690,6 +698,7 @@ class MainActivity : AppCompatActivity() {
                 animationDrawable_2.start()
             }//end of else block
         }//end of when block
+        playSound(Sounds.SET_SOUND.soundId)
     }//end of setPlayer_2_Animation function
 
     fun AnimationDrawable.onAnimationFinished(block: () -> Unit) {
@@ -759,7 +768,7 @@ class MainActivity : AppCompatActivity() {
         objectAnimation.repeatMode = ObjectAnimator.RESTART
 
         objectAnimation.start()
-        playSoundPiecesFlipOffBoard()
+        playSound(Sounds.PIECES_FLIP_OFF_BOARD.soundId)
 
         objectAnimation.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {}
@@ -786,6 +795,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onAnimationRepeat(animation: Animator) {}
         })//end of negative_objectAnimation.addListener block
+        playSound(Sounds.BOMB_1_SOUND.soundId)
     }//end of boomAnimate function
 
     fun winningLineAnimate(lineId: Int){
@@ -794,12 +804,13 @@ class MainActivity : AppCompatActivity() {
         imageLine.setBackgroundResource(lineId)
         animationDrawable_3 = imageLine.background as AnimationDrawable
         animationDrawable_3.start()
-//        animationDrawable_3.onAnimationFinished {imageLine.setBackgroundResource(R.drawable.line_horizontal_1)}
+        playSound(Sounds.WINNING_LINE_SOUND.soundId)
         println("is animationDrawable_3 running = ${animationDrawable_3.isRunning}")
     }
 
-    fun playSoundPiecesFlipOffBoard() {
-        soundPool_pieces_flip_off_board?.play(soundId, 1F, 1F, 0, 0, 1F)
+    fun playSound(soundId: Int) {
+        println("in playSound ")
+        soundPool?.play(soundId, 1F, 1F, 0, 0, 1F)
         Toast.makeText(this, "Playing sound. . . .", Toast.LENGTH_SHORT).show()
     }
 
