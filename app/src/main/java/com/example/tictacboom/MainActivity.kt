@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     var player_1 = Player()
     var player_2 = Player()
-
+    var isGameOver = false
     var  CPU_List = ArrayList<Int>()
 
     var ActivePlayer = 1
@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         player_2.src = R.drawable.neon_red_o
         player_2.srcSetAnimation = R.drawable.heart_animation
         player_2.srcBoomAnimation = R.drawable.neon_red_o_boom
+        player_1_points.text = player_1.points.toString()
+        player_2_points.text = player_2.points.toString()
         soundPool = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
         soundPool!!.load(baseContext, Sounds.BOMB_1_SOUND.sound, 0)
         soundPool!!.load(baseContext, Sounds.CPU_POINT_SOUND.sound, 0)
@@ -107,6 +109,8 @@ class MainActivity : AppCompatActivity() {
 
         PVP.setBackgroundColor(android.R.drawable.btn_default)
         PVC.setBackgroundColor(Color.CYAN)
+
+        isGameOver = false
     }
 
     fun buttonClick(view: View)
@@ -146,23 +150,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun playGame(cellId:Int,buSelected:ImageButton)
-    {
+    fun playGame(cellId:Int,buSelected:ImageButton) {
+        if(!isGameOver){
         println("in playGame(cellId:Int,buSelected:ImageButton) function")
-        if (ActivePlayer == 1)
-        {
+        if (ActivePlayer == 1) {
             println("player_1 play")
             player_1.moves.add(cellId)
-            setPlayer_1_Animation(buSelected,R.drawable.x_animation)
+            setPlayer_1_Animation(buSelected, R.drawable.x_animation)
             vanishAnimations()
 
-            breakFunction(cellId,buSelected,player_1.src)
+            breakFunction(cellId, buSelected, player_1.src)
 
             ActivePlayer = 2
-            if (setPlayer == 1)
-            {}
-            else
-            {
+            if (setPlayer == 1) {
+            } else {
                 try {
                     val thread = Thread {
                         Thread.sleep(1000)
@@ -172,24 +173,23 @@ class MainActivity : AppCompatActivity() {
                     }
                     thread.start()
 
-                }catch (ex:Exception)
-                {
-                    Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show()
+                } catch (ex: Exception) {
+                    Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show()
                 }//end of catch block
             }//end of else block
         }//end of if block "ActivePlayer == 1"
-        else
-        {
+        else {
             println("player_2 play")
             player_2.moves.add(cellId)
             ActivePlayer = 1
-            setPlayer_2_Animation(buSelected,R.drawable.heart_animation)
+            setPlayer_2_Animation(buSelected, R.drawable.heart_animation)
             vanishAnimations()
 
-            breakFunction(cellId,buSelected,player_2.src)
+            breakFunction(cellId, buSelected, player_2.src)
 
         }//end of else block
-    }
+        }//end of ....
+    }//end of playGame function
 
     fun checkWinner()
     {
@@ -314,6 +314,8 @@ class MainActivity : AppCompatActivity() {
                     println("player_1 wins \n")
                     stopTouch()
                     winningLineAnimate(line)
+                    setPlayerPoints(1)
+                    isGameOver = true
                 }
                 else
                 {
@@ -322,6 +324,8 @@ class MainActivity : AppCompatActivity() {
                     println("You Won!! \n")
                     stopTouch()
                     winningLineAnimate(line)
+                    setPlayerPoints(1)
+                    isGameOver = true
                 }
             }
             else
@@ -334,6 +338,8 @@ class MainActivity : AppCompatActivity() {
                     println("player 2 wins \n")
                     stopTouch()
                     winningLineAnimate(line)
+                    setPlayerPoints(2)
+                    isGameOver = true
                 }
                 else
                 {
@@ -342,6 +348,8 @@ class MainActivity : AppCompatActivity() {
                     println("CPU Wins \n")
                     stopTouch()
                     winningLineAnimate(line)
+                    setPlayerPoints(2)
+                    isGameOver = true
                 }
             }
         }
@@ -811,7 +819,16 @@ class MainActivity : AppCompatActivity() {
     fun playSound(soundId: Int) {
         println("in playSound ")
         soundPool?.play(soundId, 1F, 1F, 0, 0, 1F)
-        Toast.makeText(this, "Playing sound. . . .", Toast.LENGTH_SHORT).show()
+    }
+
+    fun setPlayerPoints(playerId: Int){
+        when(playerId){
+            1 -> player_1.points += player_1.moves.size * 100
+            2 -> player_2.points += player_2.moves.size * 100
+        }
+        player_1_points.text = player_1.points.toString()
+        player_2_points.text = player_2.points.toString()
+        playSound(Sounds.PLAYER_POINT_SOUND.soundId)
     }
 
 }
