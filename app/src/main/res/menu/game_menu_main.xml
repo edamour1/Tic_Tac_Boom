@@ -2,21 +2,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.tictacboom.PlayGameActivity">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:orderInCategory="101"
+        android:title="Home"
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/x_skins"
         android:icon="@drawable/neon_blue_x"
         android:orderInCategory="101"
-        android:title="x skins"
+        android:title="X skins"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/o_skins"
         android:icon="@drawable/neon_red_o"
         android:orderInCategory="101"
-        android:title="o skins"
+        android:title="O skins"
         app:showAsAction="always" />
 </menu>
