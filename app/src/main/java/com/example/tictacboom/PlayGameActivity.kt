@@ -16,7 +16,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import android.media.AudioManager
 import android.media.SoundPool
+import androidx.appcompat.app.ActionBarDrawerToggle
 import kotlinx.android.synthetic.main.activity_play_game.*
+import kotlinx.android.synthetic.main.drawer_game_nav.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,6 +65,7 @@ class PlayGameActivity : AppCompatActivity() {
     }
 
     private fun inflate() {
+        game_nav_view.itemIconTintList = null
         player_1.src = R.drawable.neon_blue_x
         player_1.srcSetAnimation = R.drawable.x_animation
         player_1.srcBoomAnimation = R.drawable.neon_blue_x_boom
